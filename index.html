@@ -1,0 +1,959 @@
+<!DOCTYPE html>
+<html lang="zh">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Fundraising Coach Reference 募款教练参考工具</title>
+<link href="https://fonts.googleapis.com/css2?family=Noto+Sans+SC:wght@300;400;500;700&family=DM+Sans:wght@300;400;500;600&family=DM+Mono:wght@400;500&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --c-d1: #E85D24;
+    --c-d2: #3B8BD4;
+    --c-d3: #1D9E75;
+    --c-d4: #7F77DD;
+    --bg: #FAFAF8;
+    --bg2: #F2F0EC;
+    --bg3: #E8E5DF;
+    --text: #1A1A18;
+    --text2: #5A5A54;
+    --text3: #9A9A90;
+    --border: rgba(0,0,0,0.10);
+    --border2: rgba(0,0,0,0.18);
+    --radius: 12px;
+    --radius-sm: 8px;
+    --shadow: 0 2px 12px rgba(0,0,0,0.07);
+    --shadow-lg: 0 8px 32px rgba(0,0,0,0.10);
+  }
+
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+
+  body {
+    font-family: 'DM Sans', 'Noto Sans SC', sans-serif;
+    background: var(--bg);
+    color: var(--text);
+    min-height: 100vh;
+    line-height: 1.6;
+  }
+
+  /* HEADER */
+  header {
+    background: var(--text);
+    color: #fff;
+    padding: 2.5rem 2rem 2rem;
+    position: relative;
+    overflow: hidden;
+  }
+  header::before {
+    content: '';
+    position: absolute;
+    top: -60px; right: -60px;
+    width: 240px; height: 240px;
+    border-radius: 50%;
+    background: rgba(255,255,255,0.04);
+  }
+  header::after {
+    content: '';
+    position: absolute;
+    bottom: -40px; left: 40px;
+    width: 160px; height: 160px;
+    border-radius: 50%;
+    background: rgba(255,255,255,0.03);
+  }
+  .header-inner { max-width: 860px; margin: 0 auto; position: relative; z-index: 1; }
+  .header-tag {
+    display: inline-block;
+    font-size: 11px;
+    letter-spacing: .12em;
+    text-transform: uppercase;
+    background: rgba(255,255,255,0.12);
+    padding: 4px 12px;
+    border-radius: 20px;
+    margin-bottom: 1rem;
+    font-family: 'DM Mono', monospace;
+  }
+  header h1 {
+    font-size: clamp(1.5rem, 4vw, 2.2rem);
+    font-weight: 600;
+    letter-spacing: -.02em;
+    margin-bottom: .4rem;
+  }
+  header p {
+    font-size: 14px;
+    color: rgba(255,255,255,0.55);
+    font-weight: 300;
+  }
+  .d-pills {
+    display: flex;
+    gap: 8px;
+    margin-top: 1.5rem;
+    flex-wrap: wrap;
+  }
+  .d-pill {
+    font-size: 11px;
+    font-weight: 500;
+    padding: 4px 10px;
+    border-radius: 20px;
+    letter-spacing: .03em;
+  }
+  .d-pill.d1 { background: rgba(232,93,36,.25); color: #F8A07A; }
+  .d-pill.d2 { background: rgba(59,139,212,.25); color: #7DBEF0; }
+  .d-pill.d3 { background: rgba(29,158,117,.25); color: #60D4A8; }
+  .d-pill.d4 { background: rgba(127,119,221,.25); color: #B4B0F0; }
+
+  /* MAIN */
+  main { max-width: 860px; margin: 0 auto; padding: 2rem 1.5rem 4rem; }
+
+  /* TABS */
+  .tab-bar {
+    display: flex;
+    gap: 4px;
+    background: var(--bg2);
+    padding: 4px;
+    border-radius: var(--radius);
+    margin-bottom: 2rem;
+    flex-wrap: wrap;
+  }
+  .tab {
+    flex: 1;
+    min-width: 120px;
+    padding: 9px 16px;
+    border: none;
+    border-radius: var(--radius-sm);
+    background: transparent;
+    cursor: pointer;
+    font-size: 13px;
+    font-family: 'DM Sans', 'Noto Sans SC', sans-serif;
+    font-weight: 500;
+    color: var(--text2);
+    transition: all .18s;
+    white-space: nowrap;
+  }
+  .tab:hover { background: var(--bg3); color: var(--text); }
+  .tab.active { background: #fff; color: var(--text); box-shadow: var(--shadow); }
+
+  .section { display: none; }
+  .section.active { display: block; }
+
+  /* OVERVIEW GRID */
+  .overview-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 14px;
+    margin-bottom: 2rem;
+  }
+  @media (max-width: 560px) { .overview-grid { grid-template-columns: 1fr; } }
+
+  .d-card {
+    background: #fff;
+    border: 1px solid var(--border);
+    border-radius: var(--radius);
+    padding: 1.2rem 1.4rem;
+    cursor: pointer;
+    transition: all .2s;
+    position: relative;
+    overflow: hidden;
+    box-shadow: var(--shadow);
+  }
+  .d-card::before {
+    content: '';
+    position: absolute;
+    left: 0; top: 0; bottom: 0;
+    width: 4px;
+    border-radius: 4px 0 0 4px;
+  }
+  .d-card.d1::before { background: var(--c-d1); }
+  .d-card.d2::before { background: var(--c-d2); }
+  .d-card.d3::before { background: var(--c-d3); }
+  .d-card.d4::before { background: var(--c-d4); }
+  .d-card:hover { transform: translateY(-2px); box-shadow: var(--shadow-lg); border-color: var(--border2); }
+
+  .d-num {
+    font-family: 'DM Mono', monospace;
+    font-size: 11px;
+    font-weight: 500;
+    margin-bottom: 6px;
+  }
+  .d-card.d1 .d-num { color: var(--c-d1); }
+  .d-card.d2 .d-num { color: var(--c-d2); }
+  .d-card.d3 .d-num { color: var(--c-d3); }
+  .d-card.d4 .d-num { color: var(--c-d4); }
+
+  .d-title-en { font-size: 15px; font-weight: 600; margin-bottom: 2px; }
+  .d-title-zh { font-size: 12px; color: var(--text2); margin-bottom: 10px; }
+
+  .s-badge {
+    display: inline-block;
+    font-size: 11px;
+    font-weight: 500;
+    padding: 3px 10px;
+    border-radius: 20px;
+    margin-bottom: 8px;
+  }
+  .d-card.d1 .s-badge { background: #FEF0E8; color: #993C1D; }
+  .d-card.d2 .s-badge { background: #E8F2FC; color: #185FA5; }
+  .d-card.d3 .s-badge { background: #E3F6EE; color: #0F6E56; }
+  .d-card.d4 .s-badge { background: #EFEEFC; color: #534AB7; }
+
+  .d-desc { font-size: 12px; color: var(--text3); }
+  .hint { font-size: 12px; color: var(--text3); text-align: center; margin-top: 4px; }
+
+  /* DETAIL PANEL */
+  .detail-panel {
+    background: #fff;
+    border: 1px solid var(--border);
+    border-radius: var(--radius);
+    padding: 1.5rem;
+    display: none;
+    margin-bottom: 2rem;
+    box-shadow: var(--shadow-lg);
+    animation: slideIn .2s ease;
+  }
+  @keyframes slideIn { from { opacity: 0; transform: translateY(8px); } to { opacity: 1; transform: translateY(0); } }
+  .detail-panel.visible { display: block; }
+
+  .detail-header {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    margin-bottom: 1.2rem;
+    padding-bottom: 1rem;
+    border-bottom: 1px solid var(--border);
+  }
+  .detail-badge {
+    width: 40px; height: 40px;
+    border-radius: 50%;
+    display: flex; align-items: center; justify-content: center;
+    font-weight: 700; font-size: 13px; color: #fff;
+    flex-shrink: 0;
+    font-family: 'DM Mono', monospace;
+  }
+  .detail-badge.d1 { background: var(--c-d1); }
+  .detail-badge.d2 { background: var(--c-d2); }
+  .detail-badge.d3 { background: var(--c-d3); }
+  .detail-badge.d4 { background: var(--c-d4); }
+
+  .close-btn {
+    margin-left: auto;
+    font-size: 12px;
+    color: var(--text3);
+    cursor: pointer;
+    padding: 5px 10px;
+    border: 1px solid var(--border);
+    border-radius: var(--radius-sm);
+    background: var(--bg2);
+    font-family: inherit;
+    transition: all .15s;
+  }
+  .close-btn:hover { background: var(--bg3); color: var(--text2); }
+
+  .two-col { display: grid; grid-template-columns: 1fr 1fr; gap: 20px; }
+  @media (max-width: 560px) { .two-col { grid-template-columns: 1fr; } }
+
+  .sec-label {
+    font-size: 10px;
+    font-weight: 600;
+    letter-spacing: .1em;
+    text-transform: uppercase;
+    color: var(--text3);
+    margin-bottom: 8px;
+    margin-top: 14px;
+    font-family: 'DM Mono', monospace;
+  }
+
+  .quote-item {
+    font-size: 12.5px;
+    color: var(--text2);
+    padding: 7px 10px;
+    border-left: 2.5px solid var(--border2);
+    margin-bottom: 6px;
+    line-height: 1.55;
+    border-radius: 0 4px 4px 0;
+  }
+
+  .kw-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 3px 10px; margin-top: 6px; }
+  .kw-item {
+    font-size: 12px;
+    color: var(--text2);
+    padding: 4px 0;
+    border-bottom: 1px solid var(--border);
+  }
+
+  .coach-block {
+    margin-top: 8px;
+    padding: .9rem 1rem;
+    border-radius: var(--radius-sm);
+    border: 1px solid var(--border);
+  }
+  .d1 .coach-block { background: #FEF5F0; border-color: #F8C8B0; }
+  .d2 .coach-block { background: #EEF5FC; border-color: #BBDAF5; }
+  .d3 .coach-block { background: #EBF7F2; border-color: #A8E2CC; }
+  .d4 .coach-block { background: #F0EFFC; border-color: #C8C5F0; }
+  .coach-phrase {
+    font-size: 12.5px;
+    color: var(--text2);
+    padding: 4px 0;
+    line-height: 1.55;
+  }
+
+  /* BEHAVIORS */
+  .beh-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 14px; margin-bottom: 2rem; }
+  @media (max-width: 560px) { .beh-grid { grid-template-columns: 1fr; } }
+
+  .beh-card {
+    background: #fff;
+    border: 1px solid var(--border);
+    border-radius: var(--radius);
+    padding: 1.2rem 1.4rem;
+    box-shadow: var(--shadow);
+  }
+  .beh-title { font-size: 15px; font-weight: 600; margin-bottom: 3px; }
+  .beh-sub { font-size: 12px; color: var(--text3); margin-bottom: 10px; font-style: italic; }
+  .beh-desc { font-size: 12.5px; color: var(--text2); line-height: 1.65; margin-bottom: 12px; }
+
+  .dac-grid { display: grid; grid-template-columns: 1fr 1fr 1fr; gap: 10px; }
+  @media (max-width: 560px) { .dac-grid { grid-template-columns: 1fr; } }
+  .dac-card {
+    background: var(--bg2);
+    border-radius: var(--radius-sm);
+    padding: .9rem 1rem;
+  }
+  .dac-title { font-size: 12px; font-weight: 600; margin-bottom: 5px; }
+  .dac-q { font-size: 12px; color: var(--text2); line-height: 1.55; }
+
+  /* GROW */
+  .grow-steps {
+    display: flex;
+    background: var(--bg2);
+    border-radius: var(--radius);
+    overflow: hidden;
+    margin-bottom: 1.5rem;
+    border: 1px solid var(--border);
+  }
+  .grow-step {
+    flex: 1;
+    padding: 1rem .8rem;
+    cursor: pointer;
+    border: none;
+    background: transparent;
+    font-family: 'DM Sans', 'Noto Sans SC', sans-serif;
+    transition: background .15s;
+    text-align: left;
+    border-right: 1px solid var(--border);
+  }
+  .grow-step:last-child { border-right: none; }
+  .grow-step:hover, .grow-step.active { background: #fff; }
+  .grow-letter { font-size: 24px; font-weight: 700; color: var(--text); font-family: 'DM Mono', monospace; }
+  .grow-word { font-size: 12px; font-weight: 500; color: var(--text2); }
+  .grow-zh { font-size: 11px; color: var(--text3); }
+
+  .grow-detail {
+    background: #fff;
+    border: 1px solid var(--border);
+    border-radius: var(--radius);
+    padding: 1.5rem;
+    box-shadow: var(--shadow);
+    min-height: 200px;
+  }
+  .grow-core {
+    font-size: 13px;
+    color: var(--text2);
+    font-style: italic;
+    margin-bottom: 1rem;
+    padding: 8px 12px;
+    background: var(--bg2);
+    border-radius: var(--radius-sm);
+  }
+  .grow-desc { font-size: 13px; color: var(--text2); margin-bottom: 1rem; line-height: 1.65; }
+  .grow-q {
+    font-size: 12.5px;
+    color: var(--text2);
+    padding: 8px 12px;
+    border-left: 2.5px solid var(--border2);
+    margin-bottom: 7px;
+    border-radius: 0 4px 4px 0;
+    line-height: 1.55;
+  }
+
+  /* APPLICATION */
+  .sr-table { width: 100%; border-collapse: collapse; margin-bottom: 2rem; }
+  .sr-table th {
+    font-size: 11px;
+    font-weight: 600;
+    letter-spacing: .06em;
+    text-transform: uppercase;
+    color: var(--text3);
+    padding: 8px 12px;
+    border-bottom: 2px solid var(--border2);
+    text-align: left;
+    font-family: 'DM Mono', monospace;
+  }
+  .sr-table td {
+    font-size: 12.5px;
+    color: var(--text2);
+    padding: 10px 12px;
+    border-bottom: 1px solid var(--border);
+    vertical-align: top;
+    line-height: 1.55;
+  }
+  .sr-table tr:last-child td { border-bottom: none; }
+  .sr-table tr:hover td { background: var(--bg2); }
+
+  .sr-badge {
+    display: inline-block;
+    font-size: 11px;
+    font-weight: 600;
+    padding: 2px 9px;
+    border-radius: 20px;
+    white-space: nowrap;
+  }
+  .b-d1 { background: #FEF0E8; color: var(--c-d1); }
+  .b-d2 { background: #E8F2FC; color: #185FA5; }
+  .b-d3 { background: #E3F6EE; color: #0F6E56; }
+  .b-d4 { background: #EFEEFC; color: #534AB7; }
+  .b-mix { background: var(--bg2); color: var(--text2); }
+
+  .checklist-wrap {
+    background: #fff;
+    border: 1px solid var(--border);
+    border-radius: var(--radius);
+    padding: 1.2rem 1.4rem;
+    box-shadow: var(--shadow);
+  }
+  .check-title { font-size: 14px; font-weight: 600; margin-bottom: 1rem; }
+  .check-item {
+    display: flex;
+    align-items: flex-start;
+    gap: 10px;
+    padding: 9px 0;
+    border-bottom: 1px solid var(--border);
+  }
+  .check-item:last-child { border-bottom: none; }
+  .check-item input[type="checkbox"] {
+    width: 16px; height: 16px;
+    margin-top: 2px;
+    flex-shrink: 0;
+    cursor: pointer;
+    accent-color: var(--c-d3);
+  }
+  .check-label { font-size: 12.5px; color: var(--text2); line-height: 1.55; cursor: pointer; }
+  .check-label span { color: var(--text3); display: block; font-size: 12px; }
+
+  /* MATCHING TABLE */
+  .match-table { width: 100%; border-collapse: collapse; background: #fff; border-radius: var(--radius); overflow: hidden; box-shadow: var(--shadow); border: 1px solid var(--border); }
+  .match-table th {
+    font-size: 11px; font-weight: 600;
+    letter-spacing: .06em; text-transform: uppercase;
+    color: var(--text3); padding: 10px 14px;
+    border-bottom: 1px solid var(--border2);
+    background: var(--bg2);
+    text-align: left;
+    font-family: 'DM Mono', monospace;
+  }
+  .match-table td { font-size: 12.5px; color: var(--text2); padding: 11px 14px; border-bottom: 1px solid var(--border); }
+  .match-table tr:last-child td { border-bottom: none; }
+  .match-table tr:hover td { background: var(--bg2); }
+
+  /* FOOTER */
+  footer {
+    text-align: center;
+    padding: 2rem 1rem 3rem;
+    font-size: 12px;
+    color: var(--text3);
+    border-top: 1px solid var(--border);
+    max-width: 860px;
+    margin: 0 auto;
+  }
+
+  /* SECTION TITLES */
+  .section-title {
+    font-size: 13px;
+    font-weight: 600;
+    color: var(--text);
+    margin-bottom: 1rem;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+  }
+  .section-title::after {
+    content: '';
+    flex: 1;
+    height: 1px;
+    background: var(--border);
+  }
+</style>
+</head>
+<body>
+
+<header>
+  <div class="header-inner">
+    <div class="header-tag">Situational Coaching · 情境式教练</div>
+    <h1>Fundraising Coach Reference<br>募款教练参考工具</h1>
+    <p>Bilingual interactive guide · 中英双语互动参考手册</p>
+    <div class="d-pills">
+      <span class="d-pill d1">D1 · Enthusiastic Beginner 热情的初学者</span>
+      <span class="d-pill d2">D2 · Disillusioned Learner 失望的学习者</span>
+      <span class="d-pill d3">D3 · Capable but Cautious 有能力但谨慎</span>
+      <span class="d-pill d4">D4 · Self-Reliant Achiever 自立的成就者</span>
+    </div>
+  </div>
+</header>
+
+<main>
+  <div class="tab-bar">
+    <button class="tab active" onclick="showTab('overview',this)">Overview 总览</button>
+    <button class="tab" onclick="showTab('behaviors',this)">Behaviors 行为</button>
+    <button class="tab" onclick="showTab('grow',this)">GROW Model</button>
+    <button class="tab" onclick="showTab('matching',this)">Matching 配对</button>
+    <button class="tab" onclick="showTab('application',this)">Application 应用</button>
+  </div>
+
+  <!-- ===== OVERVIEW ===== -->
+  <div class="section active" id="tab-overview">
+    <div class="section-title">Development Levels & Coaching Styles · 发展阶段与教练风格</div>
+    <div class="overview-grid">
+      <div class="d-card d1" onclick="showDetail('d1')">
+        <div class="d-num">D1 · S1</div>
+        <div class="d-title-en">Enthusiastic Beginner</div>
+        <div class="d-title-zh">热情的初学者</div>
+        <div class="s-badge">S1 Telling / Directing · 告知型 / 指示型</div>
+        <div class="d-desc">High commitment · Low competence<br>高委身 · 低能力</div>
+      </div>
+      <div class="d-card d2" onclick="showDetail('d2')">
+        <div class="d-num">D2 · S2</div>
+        <div class="d-title-en">Disillusioned Learner</div>
+        <div class="d-title-zh">失望的学习者</div>
+        <div class="s-badge">S2 Selling / Coaching · 推销型 / 教练型</div>
+        <div class="d-desc">Some competence · Lower commitment<br>有能力 · 委身下降</div>
+      </div>
+      <div class="d-card d3" onclick="showDetail('d3')">
+        <div class="d-num">D3 · S3</div>
+        <div class="d-title-en">Capable but Cautious</div>
+        <div class="d-title-zh">有能力但谨慎的执行者</div>
+        <div class="s-badge">S3 Participating / Supporting · 参与型 / 支持型</div>
+        <div class="d-desc">Growing competence · Fluctuating confidence<br>能力增长 · 信心波动</div>
+      </div>
+      <div class="d-card d4" onclick="showDetail('d4')">
+        <div class="d-num">D4 · S4</div>
+        <div class="d-title-en">Self-Reliant Achiever</div>
+        <div class="d-title-zh">自立的成就者</div>
+        <div class="s-badge">S4 Delegating · 授权型</div>
+        <div class="d-desc">High competence · High commitment<br>高能力 · 高委身</div>
+      </div>
+    </div>
+    <p class="hint">Click a card to expand · 点击卡片查看详情</p>
+
+    <!-- D1 Detail -->
+    <div class="detail-panel d1" id="detail-d1">
+      <div class="detail-header">
+        <div class="detail-badge d1">D1</div>
+        <div>
+          <div style="font-size:15px;font-weight:600">Enthusiastic Beginner · 热情的初学者</div>
+          <div style="font-size:12px;color:var(--text3)">S1 Telling / Directing · 告知型 / 指示型</div>
+        </div>
+        <button class="close-btn" onclick="closeDetail('d1')">✕ Close</button>
+      </div>
+      <div class="two-col">
+        <div>
+          <div class="sec-label">What they say · 他们可能会说</div>
+          <div class="quote-item">"I'm excited, but I don't know where to start."<br><span style="color:var(--text3)">我很兴奋，但我不知道从哪里开始。</span></div>
+          <div class="quote-item">"I need clear structure and direction."<br><span style="color:var(--text3)">我需要清楚的结构和方向。</span></div>
+          <div class="quote-item">"Please show me what to do."<br><span style="color:var(--text3)">请告诉我该怎么做。</span></div>
+          <div class="sec-label">What they need · 他们需要</div>
+          <div class="kw-grid">
+            <div class="kw-item">Clear direction 清楚方向</div>
+            <div class="kw-item">Specific steps 具体步骤</div>
+            <div class="kw-item">Structure 结构</div>
+            <div class="kw-item">Training 训练</div>
+            <div class="kw-item">Close follow-up 密切跟进</div>
+          </div>
+        </div>
+        <div>
+          <div class="sec-label">Coach posture · 教练姿态</div>
+          <div class="coach-block">
+            <div class="coach-phrase">"I will show you what to do." <span style="color:var(--text3);font-size:12px">我会告诉你该怎么做。</span></div>
+            <div class="coach-phrase">"Let me give you a clear structure." <span style="color:var(--text3);font-size:12px">我来给你一个清楚的结构。</span></div>
+            <div class="coach-phrase">"Here are the next steps." <span style="color:var(--text3);font-size:12px">接下来你可以这样做。</span></div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- D2 Detail -->
+    <div class="detail-panel d2" id="detail-d2">
+      <div class="detail-header">
+        <div class="detail-badge d2">D2</div>
+        <div>
+          <div style="font-size:15px;font-weight:600">Disillusioned Learner · 失望的学习者</div>
+          <div style="font-size:12px;color:var(--text3)">S2 Selling / Coaching · 推销型 / 教练型</div>
+        </div>
+        <button class="close-btn" onclick="closeDetail('d2')">✕ Close</button>
+      </div>
+      <div class="two-col">
+        <div>
+          <div class="sec-label">What they say · 他们可能会说</div>
+          <div class="quote-item">"I feel discouraged."<br><span style="color:var(--text3)">我感到很灰心。</span></div>
+          <div class="quote-item">"I'm getting mostly noes — what's the point?"<br><span style="color:var(--text3)">我得到的大多是拒绝，那继续做有什么意义？</span></div>
+          <div class="quote-item">"I need both encouragement and direction."<br><span style="color:var(--text3)">我既需要鼓励，也需要方向。</span></div>
+          <div class="quote-item">"I don't know if this will work."<br><span style="color:var(--text3)">我不知道这样做到底有没有用。</span></div>
+          <div class="sec-label">What they need · 他们需要</div>
+          <div class="kw-grid">
+            <div class="kw-item">Encouragement 鼓励</div>
+            <div class="kw-item">Direction 方向</div>
+            <div class="kw-item">Confidence-building 建立信心</div>
+            <div class="kw-item">Clarification 澄清</div>
+            <div class="kw-item">Reframing 重新看待</div>
+            <div class="kw-item">Accountability 责任跟进</div>
+          </div>
+        </div>
+        <div>
+          <div class="sec-label">Coach posture · 教练姿态</div>
+          <div class="coach-block">
+            <div class="coach-phrase">"Let me explain why this matters." <span style="color:var(--text3);font-size:12px">我来解释为什么这件事重要。</span></div>
+            <div class="coach-phrase">"You are not alone in this process." <span style="color:var(--text3);font-size:12px">在这个过程中你不是一个人。</span></div>
+            <div class="coach-phrase">"Let's clarify your next step together." <span style="color:var(--text3);font-size:12px">我们一起来澄清你的下一步。</span></div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- D3 Detail -->
+    <div class="detail-panel d3" id="detail-d3">
+      <div class="detail-header">
+        <div class="detail-badge d3">D3</div>
+        <div>
+          <div style="font-size:15px;font-weight:600">Capable but Cautious · 有能力但谨慎的执行者</div>
+          <div style="font-size:12px;color:var(--text3)">S3 Participating / Supporting · 参与型 / 支持型</div>
+        </div>
+        <button class="close-btn" onclick="closeDetail('d3')">✕ Close</button>
+      </div>
+      <div class="two-col">
+        <div>
+          <div class="sec-label">What they say · 他们可能会说</div>
+          <div class="quote-item">"I know what to do, but I need support."<br><span style="color:var(--text3)">我知道该做什么，但我需要支持。</span></div>
+          <div class="quote-item">"I'm afraid this may hurt relationships."<br><span style="color:var(--text3)">我担心这会伤害关系。</span></div>
+          <div class="quote-item">"I need help thinking this through."<br><span style="color:var(--text3)">我需要有人陪我一起想清楚。</span></div>
+          <div class="quote-item">"I'm not sure I can keep going."<br><span style="color:var(--text3)">我不确定自己能不能继续坚持。</span></div>
+          <div class="sec-label">What they need · 他们需要</div>
+          <div class="kw-grid">
+            <div class="kw-item">Listening 聆听</div>
+            <div class="kw-item">Encouragement 鼓励</div>
+            <div class="kw-item">Affirmation 肯定</div>
+            <div class="kw-item">Shared reflection 一起反思</div>
+            <div class="kw-item">Brainstorming 探索方案</div>
+            <div class="kw-item">Emotional support 情绪支持</div>
+          </div>
+        </div>
+        <div>
+          <div class="sec-label">Coach posture · 教练姿态</div>
+          <div class="coach-block">
+            <div class="coach-phrase">"What do you think is happening?" <span style="color:var(--text3);font-size:12px">你觉得现在发生了什么？</span></div>
+            <div class="coach-phrase">"What options do you see?" <span style="color:var(--text3);font-size:12px">你看到有哪些可能的选择？</span></div>
+            <div class="coach-phrase">"I believe you can discern the next step." <span style="color:var(--text3);font-size:12px">我相信你能够分辨下一步。</span></div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- D4 Detail -->
+    <div class="detail-panel d4" id="detail-d4">
+      <div class="detail-header">
+        <div class="detail-badge d4">D4</div>
+        <div>
+          <div style="font-size:15px;font-weight:600">Self-Reliant Achiever · 自立的成就者</div>
+          <div style="font-size:12px;color:var(--text3)">S4 Delegating · 授权型</div>
+        </div>
+        <button class="close-btn" onclick="closeDetail('d4')">✕ Close</button>
+      </div>
+      <div class="two-col">
+        <div>
+          <div class="sec-label">What they say · 他们可能会说</div>
+          <div class="quote-item">"I'm motivated, competent, and confident."<br><span style="color:var(--text3)">我有动力、有能力，也有信心。</span></div>
+          <div class="quote-item">"I know what needs to be done."<br><span style="color:var(--text3)">我知道需要做什么。</span></div>
+          <div class="quote-item">"I can take it from here."<br><span style="color:var(--text3)">接下来我可以自己推进。</span></div>
+          <div class="quote-item">"I just need resources or occasional input."<br><span style="color:var(--text3)">我只需要一些资源，或偶尔的建议。</span></div>
+          <div class="sec-label">What they need · 他们需要</div>
+          <div class="kw-grid">
+            <div class="kw-item">Trust 信任</div>
+            <div class="kw-item">Empowerment 授权</div>
+            <div class="kw-item">Resources 资源</div>
+            <div class="kw-item">Freedom 空间</div>
+            <div class="kw-item">Occasional check-in 偶尔跟进</div>
+            <div class="kw-item">Strategic input 策略建议</div>
+          </div>
+        </div>
+        <div>
+          <div class="sec-label">Coach posture · 教练姿态</div>
+          <div class="coach-block">
+            <div class="coach-phrase">"I trust you to move this forward." <span style="color:var(--text3);font-size:12px">我相信你可以继续推进。</span></div>
+            <div class="coach-phrase">"What resources do you need from me?" <span style="color:var(--text3);font-size:12px">你需要我提供什么资源？</span></div>
+            <div class="coach-phrase">"Let's check in after you take the next step." <span style="color:var(--text3);font-size:12px">你完成下一步之后，我们再跟进。</span></div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- ===== BEHAVIORS ===== -->
+  <div class="section" id="tab-behaviors">
+    <div class="section-title">Two Key Behaviors · 两种关键行为</div>
+    <div class="beh-grid">
+      <div class="beh-card">
+        <div class="beh-title">Directive Behavior · 指导性行为</div>
+        <div class="beh-sub">One-way communication · 单向沟通</div>
+        <div class="beh-desc">The coach provides structure, direction, expectations, and accountability. Explains what, how, when, and how progress is measured.<br><br>教练提供结构、方向、期待和责任跟进。说明需要做什么、如何做、什么时候做，以及如何衡量进展。</div>
+        <div class="sec-label">Key words · 关键词</div>
+        <div class="kw-grid">
+          <div class="kw-item">Structure 结构</div>
+          <div class="kw-item">Direction 方向</div>
+          <div class="kw-item">Clarity 清晰</div>
+          <div class="kw-item">Control 管理 / 掌握</div>
+          <div class="kw-item">Supervision 监督 / 跟进</div>
+        </div>
+      </div>
+      <div class="beh-card">
+        <div class="beh-title">Supportive Behavior · 支持性行为</div>
+        <div class="beh-sub">Two-way communication · 双向沟通</div>
+        <div class="beh-desc">The coach listens, encourages, asks questions, affirms progress, and involves the coachee in reflection and decision-making.<br><br>教练会聆听、鼓励、提问、肯定进步，并邀请被教练者一起反思和参与决策。</div>
+        <div class="sec-label">Key words · 关键词</div>
+        <div class="kw-grid">
+          <div class="kw-item">Listen 聆听</div>
+          <div class="kw-item">Encourage 鼓励</div>
+          <div class="kw-item">Praise 称赞 / 肯定</div>
+          <div class="kw-item">Facilitate 促进 / 引导</div>
+          <div class="kw-item">Support 支持</div>
+        </div>
+      </div>
+    </div>
+
+    <div class="section-title">Diagnose · Adapt · Communicate · 诊断 · 调整 · 沟通</div>
+    <div class="dac-grid">
+      <div class="dac-card">
+        <div class="dac-title">Diagnose 诊断</div>
+        <div class="dac-q">What is their ability and commitment?<br><span style="color:var(--text3)">他们的能力和委身如何？</span></div>
+      </div>
+      <div class="dac-card">
+        <div class="dac-title">Adapt 调整</div>
+        <div class="dac-q">What style do they need from me?<br><span style="color:var(--text3)">他们现在需要我用什么风格？</span></div>
+      </div>
+      <div class="dac-card">
+        <div class="dac-title">Communicate 沟通</div>
+        <div class="dac-q">How can I communicate in a way they can receive?<br><span style="color:var(--text3)">我如何用他们能接受的方式沟通？</span></div>
+      </div>
+    </div>
+  </div>
+
+  <!-- ===== GROW ===== -->
+  <div class="section" id="tab-grow">
+    <div class="section-title">GROW Coaching Model · GROW 教练模型</div>
+    <div class="grow-steps">
+      <button class="grow-step active" id="gs-g" onclick="showGrow('g')">
+        <div class="grow-letter">G</div>
+        <div class="grow-word">Goal</div>
+        <div class="grow-zh">目标</div>
+      </button>
+      <button class="grow-step" id="gs-r" onclick="showGrow('r')">
+        <div class="grow-letter">R</div>
+        <div class="grow-word">Reality</div>
+        <div class="grow-zh">现实</div>
+      </button>
+      <button class="grow-step" id="gs-o" onclick="showGrow('o')">
+        <div class="grow-letter">O</div>
+        <div class="grow-word">Options</div>
+        <div class="grow-zh">选择</div>
+      </button>
+      <button class="grow-step" id="gs-w" onclick="showGrow('w')">
+        <div class="grow-letter">W</div>
+        <div class="grow-word">Will / Way Forward</div>
+        <div class="grow-zh">意愿 / 下一步</div>
+      </button>
+    </div>
+    <div class="grow-detail" id="grow-detail"></div>
+  </div>
+
+  <!-- ===== MATCHING ===== -->
+  <div class="section" id="tab-matching">
+    <div class="section-title">Development Level & Coaching Style · 发展阶段与教练风格配对</div>
+    <table class="match-table" style="margin-bottom:2rem">
+      <thead>
+        <tr>
+          <th>Level 阶段</th>
+          <th>Coachee 被教练者状态</th>
+          <th>Style 教练风格</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr>
+          <td><span class="sr-badge b-d1">D1</span><br><span style="font-size:11px;color:var(--text3)">热情的初学者</span></td>
+          <td>High commitment, low competence<br><span style="color:var(--text3);font-size:12px">高委身，低能力</span></td>
+          <td><span class="sr-badge b-d1">S1</span> Telling / Directing<br><span style="color:var(--text3);font-size:12px">告知型 / 指示型</span></td>
+        </tr>
+        <tr>
+          <td><span class="sr-badge b-d2">D2</span><br><span style="font-size:11px;color:var(--text3)">失望的学习者</span></td>
+          <td>Some competence, lower commitment<br><span style="color:var(--text3);font-size:12px">有一些能力，委身下降</span></td>
+          <td><span class="sr-badge b-d2">S2</span> Selling / Coaching<br><span style="color:var(--text3);font-size:12px">推销型 / 教练型</span></td>
+        </tr>
+        <tr>
+          <td><span class="sr-badge b-d3">D3</span><br><span style="font-size:11px;color:var(--text3)">有能力但谨慎的执行者</span></td>
+          <td>Growing competence, fluctuating confidence<br><span style="color:var(--text3);font-size:12px">能力增长，信心波动</span></td>
+          <td><span class="sr-badge b-d3">S3</span> Participating / Supporting<br><span style="color:var(--text3);font-size:12px">参与型 / 支持型</span></td>
+        </tr>
+        <tr>
+          <td><span class="sr-badge b-d4">D4</span><br><span style="font-size:11px;color:var(--text3)">自立的成就者</span></td>
+          <td>High competence, high commitment<br><span style="color:var(--text3);font-size:12px">高能力，高委身</span></td>
+          <td><span class="sr-badge b-d4">S4</span> Delegating<br><span style="color:var(--text3);font-size:12px">授权型</span></td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+
+  <!-- ===== APPLICATION ===== -->
+  <div class="section" id="tab-application">
+    <div class="section-title">Support Raising Scenarios · 信心募款情境应用</div>
+    <table class="sr-table" style="background:#fff;border-radius:var(--radius);overflow:hidden;box-shadow:var(--shadow);border:1px solid var(--border);margin-bottom:2rem">
+      <thead>
+        <tr>
+          <th>Situation 情况</th>
+          <th>Level 阶段</th>
+          <th>Style 风格</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr>
+          <td>Excited but doesn't know where to start<br><span style="color:var(--text3);font-size:12px">很兴奋，但不知道从哪里开始</span></td>
+          <td><span class="sr-badge b-d1">D1</span></td>
+          <td><span class="sr-badge b-d1">S1 指示型</span></td>
+        </tr>
+        <tr>
+          <td>Discouraged by rejection or lack of response<br><span style="color:var(--text3);font-size:12px">因拒绝或缺乏回应而灰心</span></td>
+          <td><span class="sr-badge b-d2">D2</span></td>
+          <td><span class="sr-badge b-d2">S2 教练型</span></td>
+        </tr>
+        <tr>
+          <td>Knows what to do but fears damaging relationships<br><span style="color:var(--text3);font-size:12px">知道该做什么，但害怕伤害关系</span></td>
+          <td><span class="sr-badge b-d3">D3</span></td>
+          <td><span class="sr-badge b-d3">S3 支持型</span></td>
+        </tr>
+        <tr>
+          <td>Has a clear plan and strong motivation<br><span style="color:var(--text3);font-size:12px">有清楚计划，也有强烈动力</span></td>
+          <td><span class="sr-badge b-d4">D4</span></td>
+          <td><span class="sr-badge b-d4">S4 授权型</span></td>
+        </tr>
+        <tr>
+          <td>Has skills but inconsistent results<br><span style="color:var(--text3);font-size:12px">有技能，但结果不稳定</span></td>
+          <td><span class="sr-badge b-mix">D3 or D2</span></td>
+          <td><span class="sr-badge b-mix">S3 or S2</span></td>
+        </tr>
+        <tr>
+          <td>Has no plan and cannot articulate vision<br><span style="color:var(--text3);font-size:12px">没有计划，也无法表达异象</span></td>
+          <td><span class="sr-badge b-mix">D1 or D2</span></td>
+          <td><span class="sr-badge b-mix">S1 or S2</span></td>
+        </tr>
+      </tbody>
+    </table>
+
+    <div class="section-title">Coaching Observation Checklist · 教练观察快速清单</div>
+    <div class="checklist-wrap">
+      <div id="checklist-items"></div>
+    </div>
+  </div>
+</main>
+
+<footer>
+  Fundraising Coach Reference Tool · 募款教练参考工具<br>
+  Based on Situational Leadership II · 基于情境领导 II 模型
+</footer>
+
+<script>
+const growData = {
+  g: {
+    letter:'G', word:'Goal', zh:'目标',
+    core:'What do you want to accomplish? · 你想达成什么？',
+    desc:'Help the coachee clarify the goal for the session and the goal for the future.<br>帮助被教练者澄清本次会谈的目标，以及未来想要达成的目标。',
+    qs:[
+      ['What would you like to focus on today?','你今天想聚焦在哪件事上？'],
+      ['What do you hope to accomplish by the end of this session?','这次会谈结束时，你希望达成什么？'],
+      ['What is your longer-term goal?','你的长期目标是什么？']
+    ]
+  },
+  r: {
+    letter:'R', word:'Reality', zh:'现实 / 现状',
+    core:'What is really happening now? · 目前真实情况是什么？',
+    desc:'Help the coachee describe the current reality honestly and clearly.<br>帮助被教练者诚实、清楚地描述目前的真实处境。',
+    qs:[
+      ['What is happening right now?','现在实际发生了什么？'],
+      ['What have you already tried?','你已经尝试过什么？'],
+      ['What is working, and what is not working?','什么有效？什么没有效果？']
+    ]
+  },
+  o: {
+    letter:'O', word:'Options', zh:'选择 / 可能方案',
+    core:'What options do you have? · 你有哪些可能的选择？',
+    desc:'Encourage the coachee to generate multiple options before choosing a next step.<br>鼓励被教练者先提出多个可能方案，再决定下一步。',
+    qs:[
+      ['What are some possible options?','有哪些可能的做法？'],
+      ['What else could you try?','你还可以尝试什么？'],
+      ['If fear were not a factor, what would you do?','如果不被惧怕限制，你会怎么做？']
+    ]
+  },
+  w: {
+    letter:'W', word:'Will / Way Forward', zh:'意愿 / 下一步',
+    core:'What will you do next, and when? · 你下一步要做什么？什么时候做？',
+    desc:'End the coaching session with a concrete plan, including action steps and a time for follow-up.<br>用具体计划来结束教练会谈，包括行动步骤和后续跟进时间。',
+    qs:[
+      ['What will you do next?','你下一步会做什么？'],
+      ['When will you do it?','你什么时候做？'],
+      ['How would you like me to follow up with you?','你希望我如何跟进你？']
+    ]
+  }
+};
+
+function showGrow(key) {
+  ['g','r','o','w'].forEach(k => document.getElementById('gs-'+k).classList.toggle('active', k===key));
+  const d = growData[key];
+  document.getElementById('grow-detail').innerHTML = `
+    <div style="font-size:16px;font-weight:600;margin-bottom:4px">${d.word} · ${d.zh}</div>
+    <div class="grow-core">${d.core}</div>
+    <div class="grow-desc">${d.desc}</div>
+    <div class="sec-label" style="margin-top:1rem">Sample questions · 示例问题</div>
+    ${d.qs.map(q=>`<div class="grow-q">${q[0]}<br><span style="color:var(--text3);font-size:12px">${q[1]}</span></div>`).join('')}
+  `;
+}
+showGrow('g');
+
+function showTab(name, btn) {
+  document.querySelectorAll('.section').forEach(s=>s.classList.remove('active'));
+  document.querySelectorAll('.tab').forEach(t=>t.classList.remove('active'));
+  document.getElementById('tab-'+name).classList.add('active');
+  btn.classList.add('active');
+}
+
+function showDetail(id) {
+  document.querySelectorAll('.detail-panel').forEach(p=>p.classList.remove('visible'));
+  const p = document.getElementById('detail-'+id);
+  p.classList.add('visible');
+  setTimeout(()=>p.scrollIntoView({behavior:'smooth',block:'nearest'}),50);
+}
+function closeDetail(id) {
+  document.getElementById('detail-'+id).classList.remove('visible');
+}
+
+// Checklist
+const checks = [
+  ['Did the coach inquire about the coachee\'s goal for the session or future goals?','教练是否询问了被教练者本次会谈的目标或未来目标？'],
+  ['Did the coach prompt the coachee to describe their current reality?','教练是否引导被教练者描述目前真实处境？'],
+  ['Did the coach encourage the coachee to generate multiple options?','教练是否鼓励被教练者提出多个可能方案？'],
+  ['Did the coach end the session with a plan and follow-up time?','教练是否以具体计划和跟进时间结束会谈？']
+];
+const cl = document.getElementById('checklist-items');
+checks.forEach((c,i)=>{
+  const div = document.createElement('div');
+  div.className='check-item';
+  div.innerHTML=`
+    <input type="checkbox" id="chk${i}">
+    <label class="check-label" for="chk${i}">${c[0]}<span>${c[1]}</span></label>
+  `;
+  cl.appendChild(div);
+});
+</script>
+</body>
+</html>
