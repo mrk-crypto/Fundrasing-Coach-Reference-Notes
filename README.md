@@ -7,7 +7,7 @@ A bilingual (English/Chinese) interactive coaching reference based on **Situatio
 
 ## 🔗 Live Site · 在线访问
 
-**https://mrk-crypto.github.io/Fundrasing-Coach-Reference-Notes-/**
+**https://mrk-crypto.github.io/Fundrasing-Coach-Reference-Notes/**
 
 ## Features · 功能
 
