@@ -320,13 +320,13 @@
   .dac-title { font-size: 12px; font-weight: 600; margin-bottom: 5px; }
   .dac-q { font-size: 12px; color: var(--text2); line-height: 1.55; }
 
-  /* GROW */
+  /* GROW — original step selector */
   .grow-steps {
     display: flex;
     background: var(--bg2);
     border-radius: var(--radius);
     overflow: hidden;
-    margin-bottom: 1.5rem;
+    margin-bottom: 1rem;
     border: 1px solid var(--border);
   }
   .grow-step {
@@ -346,6 +346,48 @@
   .grow-word { font-size: 12px; font-weight: 500; color: var(--text2); }
   .grow-zh { font-size: 11px; color: var(--text3); }
 
+  /* GROW — new filter bar */
+  .grow-filter-bar {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    flex-wrap: wrap;
+    margin-bottom: 1rem;
+    padding: 10px 14px;
+    background: var(--bg2);
+    border-radius: var(--radius-sm);
+    border: 1px solid var(--border);
+  }
+  .grow-filter-label {
+    font-size: 10px;
+    font-weight: 600;
+    letter-spacing: .1em;
+    text-transform: uppercase;
+    color: var(--text3);
+    font-family: 'DM Mono', monospace;
+    margin-right: 2px;
+  }
+  .gf-btn {
+    font-size: 11px;
+    font-weight: 500;
+    padding: 4px 12px;
+    border-radius: 20px;
+    border: 1px solid var(--border2);
+    background: #fff;
+    cursor: pointer;
+    color: var(--text2);
+    transition: all .15s;
+    font-family: 'DM Sans', 'Noto Sans SC', sans-serif;
+    letter-spacing: .02em;
+  }
+  .gf-btn:hover { background: var(--bg3); }
+  .gf-btn.active { background: var(--text); color: #fff; border-color: var(--text); }
+  .gf-btn.active.gf-d1 { background: var(--c-d1); border-color: var(--c-d1); }
+  .gf-btn.active.gf-d2 { background: var(--c-d2); border-color: var(--c-d2); }
+  .gf-btn.active.gf-d3 { background: var(--c-d3); border-color: var(--c-d3); }
+  .gf-btn.active.gf-d4 { background: var(--c-d4); border-color: var(--c-d4); }
+
+  /* GROW — detail panel */
   .grow-detail {
     background: #fff;
     border: 1px solid var(--border);
@@ -358,21 +400,97 @@
     font-size: 13px;
     color: var(--text2);
     font-style: italic;
-    margin-bottom: 1rem;
+    margin-bottom: .75rem;
     padding: 8px 12px;
     background: var(--bg2);
     border-radius: var(--radius-sm);
   }
-  .grow-desc { font-size: 13px; color: var(--text2); margin-bottom: 1rem; line-height: 1.65; }
-  .grow-q {
+  .grow-desc { font-size: 13px; color: var(--text2); margin-bottom: .75rem; line-height: 1.65; }
+
+  /* GROW — coach tip block (new) */
+  .grow-tip {
+    margin-bottom: 1.1rem;
+    padding: 10px 14px;
+    border-radius: var(--radius-sm);
+    background: var(--bg2);
+    border-left: 3px solid var(--border2);
     font-size: 12.5px;
     color: var(--text2);
-    padding: 8px 12px;
-    border-left: 2.5px solid var(--border2);
-    margin-bottom: 7px;
-    border-radius: 0 4px 4px 0;
-    line-height: 1.55;
+    line-height: 1.65;
   }
+  .grow-tip-label {
+    font-size: 10px;
+    font-weight: 600;
+    letter-spacing: .1em;
+    text-transform: uppercase;
+    color: var(--text3);
+    margin-bottom: 5px;
+    font-family: 'DM Mono', monospace;
+  }
+
+  /* GROW — D-level question groups (new) */
+  .grow-d-group { margin-bottom: .75rem; }
+  .grow-d-group.gf-hidden { display: none; }
+
+  .grow-d-header {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    margin-bottom: 5px;
+  }
+  .grow-d-badge {
+    font-size: 10px;
+    font-weight: 600;
+    padding: 2px 9px;
+    border-radius: 20px;
+    letter-spacing: .04em;
+    font-family: 'DM Mono', monospace;
+  }
+  .grow-d-badge.db1 { background: #FEF0E8; color: var(--c-d1); }
+  .grow-d-badge.db2 { background: #E8F2FC; color: #185FA5; }
+  .grow-d-badge.db3 { background: #E3F6EE; color: #0F6E56; }
+  .grow-d-badge.db4 { background: #EFEEFC; color: #534AB7; }
+  .grow-d-name { font-size: 11px; color: var(--text3); }
+
+  /* GROW — individual question row (new) */
+  .grow-q-row {
+    font-size: 12.5px;
+    color: var(--text2);
+    padding: 8px 10px 8px 12px;
+    border-left: 2.5px solid var(--border2);
+    margin-bottom: 5px;
+    border-radius: 0 var(--radius-sm) var(--radius-sm) 0;
+    line-height: 1.55;
+    cursor: pointer;
+    display: flex;
+    align-items: flex-start;
+    gap: 10px;
+    transition: background .12s, border-color .12s;
+    user-select: none;
+  }
+  .grow-q-row:hover { background: var(--bg2); border-left-color: var(--text2); }
+  .grow-q-row.gqr-copied { background: #EBF7F2; border-left-color: var(--c-d3); }
+  .grow-q-row .qr-text { flex: 1; }
+  .grow-q-row .qr-zh { display: block; font-weight: 500; }
+  .grow-q-row .qr-en { display: block; font-size: 12px; color: var(--text3); margin-top: 2px; }
+  .grow-q-row .qr-copy {
+    font-size: 10px;
+    color: var(--text3);
+    opacity: 0;
+    transition: opacity .15s;
+    white-space: nowrap;
+    padding-top: 2px;
+    flex-shrink: 0;
+    font-family: 'DM Mono', monospace;
+  }
+  .grow-q-row:hover .qr-copy { opacity: 1; }
+  .grow-q-row.gqr-copied .qr-copy { opacity: 1; color: var(--c-d3); }
+
+  /* D-level border color per group */
+  .grow-d-group[data-dl="1"] .grow-q-row { border-left-color: rgba(232,93,36,.35); }
+  .grow-d-group[data-dl="2"] .grow-q-row { border-left-color: rgba(59,139,212,.35); }
+  .grow-d-group[data-dl="3"] .grow-q-row { border-left-color: rgba(29,158,117,.35); }
+  .grow-d-group[data-dl="4"] .grow-q-row { border-left-color: rgba(127,119,221,.35); }
 
   /* APPLICATION */
   .sr-table { width: 100%; border-collapse: collapse; margin-bottom: 2rem; }
@@ -419,7 +537,6 @@
     padding: 1.2rem 1.4rem;
     box-shadow: var(--shadow);
   }
-  .check-title { font-size: 14px; font-weight: 600; margin-bottom: 1rem; }
   .check-item {
     display: flex;
     align-items: flex-start;
@@ -437,6 +554,13 @@
   }
   .check-label { font-size: 12.5px; color: var(--text2); line-height: 1.55; cursor: pointer; }
   .check-label span { color: var(--text3); display: block; font-size: 12px; }
+  .check-count {
+    font-size: 12px;
+    color: var(--text3);
+    text-align: right;
+    margin-top: 10px;
+    font-family: 'DM Mono', monospace;
+  }
 
   /* MATCHING TABLE */
   .match-table { width: 100%; border-collapse: collapse; background: #fff; border-radius: var(--radius); overflow: hidden; box-shadow: var(--shadow); border: 1px solid var(--border); }
@@ -452,6 +576,25 @@
   .match-table td { font-size: 12.5px; color: var(--text2); padding: 11px 14px; border-bottom: 1px solid var(--border); }
   .match-table tr:last-child td { border-bottom: none; }
   .match-table tr:hover td { background: var(--bg2); }
+
+  /* TOAST */
+  .toast {
+    position: fixed;
+    bottom: 1.5rem;
+    left: 50%;
+    transform: translateX(-50%) translateY(1rem);
+    background: var(--text);
+    color: #fff;
+    padding: 6px 16px;
+    border-radius: 20px;
+    font-size: 12px;
+    font-family: 'DM Mono', monospace;
+    opacity: 0;
+    pointer-events: none;
+    transition: all .22s;
+    z-index: 999;
+  }
+  .toast.show { opacity: 1; transform: translateX(-50%) translateY(0); }
 
   /* FOOTER */
   footer {
@@ -502,7 +645,7 @@
   <div class="tab-bar">
     <button class="tab active" onclick="showTab('overview',this)">Overview 总览</button>
     <button class="tab" onclick="showTab('behaviors',this)">Behaviors 行为</button>
-    <button class="tab" onclick="showTab('grow',this)">GROW Model</button>
+    <button class="tab" onclick="showTab('grow',this)">GROW Model ★</button>
     <button class="tab" onclick="showTab('matching',this)">Matching 配对</button>
     <button class="tab" onclick="showTab('application',this)">Application 应用</button>
   </div>
@@ -745,6 +888,8 @@
   <!-- ===== GROW ===== -->
   <div class="section" id="tab-grow">
     <div class="section-title">GROW Coaching Model · GROW 教练模型</div>
+
+    <!-- Step selector (original UI preserved) -->
     <div class="grow-steps">
       <button class="grow-step active" id="gs-g" onclick="showGrow('g')">
         <div class="grow-letter">G</div>
@@ -767,6 +912,18 @@
         <div class="grow-zh">意愿 / 下一步</div>
       </button>
     </div>
+
+    <!-- D-level filter bar (new) -->
+    <div class="grow-filter-bar">
+      <span class="grow-filter-label">Filter · 筛选</span>
+      <button class="gf-btn active" data-fl="all" onclick="setFilter('all',this)">All · 全部</button>
+      <button class="gf-btn gf-d1" data-fl="1" onclick="setFilter('1',this)">D1 · 热情初学</button>
+      <button class="gf-btn gf-d2" data-fl="2" onclick="setFilter('2',this)">D2 · 失望学习</button>
+      <button class="gf-btn gf-d3" data-fl="3" onclick="setFilter('3',this)">D3 · 谨慎执行</button>
+      <button class="gf-btn gf-d4" data-fl="4" onclick="setFilter('4',this)">D4 · 自立成就</button>
+    </div>
+
+    <!-- Detail panel (expanded by JS) -->
     <div class="grow-detail" id="grow-detail"></div>
   </div>
 
@@ -848,112 +1005,284 @@
           <td><span class="sr-badge b-mix">D1 or D2</span></td>
           <td><span class="sr-badge b-mix">S1 or S2</span></td>
         </tr>
+        <tr>
+          <td>Deeply resistant to asking — feels like burdening others<br><span style="color:var(--text3);font-size:12px">内心抗拒"开口要钱"，觉得在麻烦别人</span></td>
+          <td><span class="sr-badge b-d2">D2</span> <span class="sr-badge b-d3">D3</span></td>
+          <td><span class="sr-badge b-mix">S2 重新框架 / S3 聆听</span></td>
+        </tr>
+        <tr>
+          <td>Reached goal but momentum dropped — now in maintenance mode<br><span style="color:var(--text3);font-size:12px">已达目标但动力下降，进入维持模式</span></td>
+          <td><span class="sr-badge b-d3">D3</span> <span class="sr-badge b-d4">D4</span></td>
+          <td><span class="sr-badge b-mix">S3 or S4</span></td>
+        </tr>
       </tbody>
     </table>
 
     <div class="section-title">Coaching Observation Checklist · 教练观察快速清单</div>
     <div class="checklist-wrap">
       <div id="checklist-items"></div>
+      <div class="check-count" id="check-count"></div>
     </div>
   </div>
 </main>
 
 <footer>
   Fundraising Coach Reference Tool · 募款教练参考工具<br>
-  Based on Situational Leadership II · 基于情境领导 II 模型
+  Based on Situational Leadership II &amp; GROW Coaching Model · 基于情境领导 II 模型与 GROW 教练模型
 </footer>
 
+<div class="toast" id="toast"></div>
+
 <script>
+/* ══════════════════════════════════════════
+   GROW DATA — full question bank
+══════════════════════════════════════════ */
 const growData = {
   g: {
     letter:'G', word:'Goal', zh:'目标',
     core:'What do you want to accomplish? · 你想达成什么？',
-    desc:'Help the coachee clarify the goal for the session and the goal for the future.<br>帮助被教练者澄清本次会谈的目标，以及未来想要达成的目标。',
-    qs:[
-      ['What would you like to focus on today?','你今天想聚焦在哪件事上？'],
-      ['What do you hope to accomplish by the end of this session?','这次会谈结束时，你希望达成什么？'],
-      ['What is your longer-term goal?','你的长期目标是什么？']
-    ]
+    desc:'帮助被教练者厘清本次会谈的目标，以及未来想要达成的方向。<br>Help the coachee clarify the goal for today\'s session and the direction they want to move toward.',
+    tip:'目标问题的关键不是"你想做什么"，而是"为什么这个目标对你有意义"。帮助被教练者连接使命感，比给出具体指标更重要。<br><span style="color:var(--text3)">The power of Goal questions is not "what do you want" but "why does this matter to you." Connecting to calling often matters more than setting metrics.</span>',
+    dqs: {
+      1: [
+        { zh:'对你来说，一个支持完整的后援团队是什么样子的？', en:'What does a fully-supported ministry team look like for you?' },
+        { zh:'你希望在什么时候达到你的募款目标？', en:'By when would you like to reach your fundraising goal?' },
+        { zh:'你目前的目标支持比例是多少？你知道需要接触多少人吗？', en:'What is your target support percentage? Do you know how many people you will need to contact?' }
+      ],
+      2: [
+        { zh:'如果你达成了这个募款目标，对你的事工和生命意味着什么？', en:'What would it mean for your ministry — and your life — if you reached this goal?' },
+        { zh:'除了数字之外，成功对你来说是什么样子的？', en:'What does success look like for you beyond just the numbers?' },
+        { zh:'是什么让你最初选择走这条事工的道路？那个呼召现在还在吗？', en:'What called you into this ministry path in the first place? Is that calling still alive in you?' }
+      ],
+      3: [
+        { zh:'在这个季节，神似乎在引领你走向什么？', en:'What does God seem to be calling you toward in this season?' },
+        { zh:'今天这次谈话结束后，你希望离开时有什么不一样？', en:'What would you like to be different when you leave our conversation today?' },
+        { zh:'你在募款上最想突破的一件事是什么？', en:'What is the one breakthrough you most want to see in your support raising?' }
+      ],
+      4: [
+        { zh:'六个月后，你希望你在募款上达到什么水平？', en:'Where do you want to be in your support raising six months from now?' },
+        { zh:'从你现在的位置，你可以如何帮助刚刚起步的同工？', en:'From where you are now, what would it look like to walk alongside someone just starting out?' },
+        { zh:'你在这个领域的下一个成长目标是什么？', en:'What is your next growth goal in this area?' }
+      ]
+    }
   },
   r: {
     letter:'R', word:'Reality', zh:'现实 / 现状',
     core:'What is really happening now? · 目前真实情况是什么？',
-    desc:'Help the coachee describe the current reality honestly and clearly.<br>帮助被教练者诚实、清楚地描述目前的真实处境。',
-    qs:[
-      ['What is happening right now?','现在实际发生了什么？'],
-      ['What have you already tried?','你已经尝试过什么？'],
-      ['What is working, and what is not working?','什么有效？什么没有效果？']
-    ]
+    desc:'帮助被教练者诚实、清楚地描述目前的真实处境，包括事实与感受。<br>Help the coachee honestly and clearly describe their current situation — both the facts and the feelings.',
+    tip:'Reality 阶段最常见的错误是太快跳到解决方案。让被教练者充分描述现状，包括感受，才能建立真实的评估基础。<br><span style="color:var(--text3)">The most common mistake in Reality is rushing to solutions. Let the coachee fully describe their situation — including feelings — before assessing anything.</span>',
+    dqs: {
+      1: [
+        { zh:'你现在有多少支持者？目前的支持比例达到多少了？', en:'How many supporters do you have now, and what percentage of your goal have you reached?' },
+        { zh:'你有没有列出潜在支持者的名单？名单上有多少人？', en:'Have you made a list of potential supporters? How many names are on it?' },
+        { zh:'到目前为止，你已经做了哪些具体的步骤？', en:'What specific steps have you taken so far?' }
+      ],
+      2: [
+        { zh:'到目前为止，这个过程中最让你灰心的时刻是什么？', en:'What has been the most discouraging moment in this process so far?' },
+        { zh:'你尝试过什么方法？效果如何？', en:'What have you tried? How did it go?' },
+        { zh:'当别人拒绝或不回应时，你心里通常会有什么感受？', en:'When someone says no or does not respond, what usually goes on inside you?' },
+        { zh:'你觉得是什么真正拦阻了你继续推进？', en:'What do you think is really holding you back from moving forward?' }
+      ],
+      3: [
+        { zh:'在募款这件事上，你对什么感到有信心？什么还让你犹豫？', en:'In support raising, what do you feel confident about? What still makes you hesitate?' },
+        { zh:'你如何感受到神在你的募款旅程中同在和工作？', en:'How do you sense God\'s presence and work in your support raising journey?' },
+        { zh:'你担心请别人支持会伤害关系——这个担心具体来自哪里？', en:'You are concerned that asking will hurt relationships — where does that fear specifically come from?' }
+      ],
+      4: [
+        { zh:'在你最成功的支持者关系中，你看到了什么共同的模式？', en:'What patterns do you see in your most successful supporter relationships?' },
+        { zh:'目前什么在运作良好？什么还有提升的空间？', en:'What is working well right now? Where is there still room to grow?' }
+      ]
+    }
   },
   o: {
     letter:'O', word:'Options', zh:'选择 / 可能方案',
     core:'What options do you have? · 你有哪些可能的选择？',
-    desc:'Encourage the coachee to generate multiple options before choosing a next step.<br>鼓励被教练者先提出多个可能方案，再决定下一步。',
-    qs:[
-      ['What are some possible options?','有哪些可能的做法？'],
-      ['What else could you try?','你还可以尝试什么？'],
-      ['If fear were not a factor, what would you do?','如果不被惧怕限制，你会怎么做？']
-    ]
+    desc:'鼓励被教练者先提出多个可能方案，再决定下一步。对 D1 可以主动提供选项，对 D3/D4 要先邀请他们自己探索。<br>Encourage the coachee to generate multiple options first. Be directive for D1; invite exploration before offering ideas to D3/D4.',
+    tip:'Options 阶段对 D1 是指导性的，对 D3/D4 是开放式的。不要把你的答案当成唯一答案——先邀请被教练者说出他们看到的可能性。<br><span style="color:var(--text3)">Options is directive for D1 but open-ended for D3/D4. Do not present your answer as the only answer — invite them to name possibilities first.</span>',
+    dqs: {
+      1: [
+        { zh:'我想和你分享别人用过的三种方式，看看哪一种对你最合适。', en:'Let me share three approaches others have used — which one feels most natural to you?' },
+        { zh:'我建议你先从最亲近的五个人开始——你觉得哪五个人是最自然的选择？', en:'I would suggest starting with your five closest relationships — who comes to mind naturally?' },
+        { zh:'我们可以一起来角色扮演一次联系的过程，你愿意吗？', en:'Would you be willing to role-play a support conversation with me so you can practice?' }
+      ],
+      2: [
+        { zh:'如果你知道不会失败，你会尝试什么？', en:'What would you try if you knew you could not fail?' },
+        { zh:'你见过别人做什么有效的方法，是你还没有尝试的？', en:'What have you seen work for others that you have not tried yet?' },
+        { zh:'如果把"请支持"重新框架成"邀请对方成为使命的一部分"，你会怎么改变你的方式？', en:'If you reframed asking for support as inviting someone to be part of the mission, how might your approach change?' }
+      ],
+      3: [
+        { zh:'你看到有哪些可能的选择？', en:'What options do you see?' },
+        { zh:'哪种方式最符合神造你成为的那个人？', en:'What approach feels most aligned with who God made you to be?' },
+        { zh:'如果那个担心关系受损的顾虑不存在，你的选择会有什么不同？', en:'If that concern about damaging the relationship were not there, what would you choose to do?' }
+      ],
+      4: [
+        { zh:'如果你在指导一个和你情况相同的人，你会给他什么建议？', en:'If you were coaching someone in your situation, what would you recommend?' },
+        { zh:'你的组织中还没有人尝试过什么创新的募款方式？', en:'What creative approach to support raising has no one in your organization tried yet?' }
+      ]
+    }
   },
   w: {
     letter:'W', word:'Will / Way Forward', zh:'意愿 / 下一步',
     core:'What will you do next, and when? · 你下一步要做什么？什么时候做？',
-    desc:'End the coaching session with a concrete plan, including action steps and a time for follow-up.<br>用具体计划来结束教练会谈，包括行动步骤和后续跟进时间。',
-    qs:[
-      ['What will you do next?','你下一步会做什么？'],
-      ['When will you do it?','你什么时候做？'],
-      ['How would you like me to follow up with you?','你希望我如何跟进你？']
-    ]
+    desc:'用具体承诺结束教练会谈，包括明确的行动步骤、时间框架，以及问责方式。<br>End the session with a concrete commitment: a specific action, a time frame, and an accountability mechanism.',
+    tip:'好的承诺包含三个要素：具体的行动 + 时间框架 + 问责方式。D1 需要教练帮助定义这三点；D4 通常能自己完成。<br><span style="color:var(--text3)">A strong commitment has three parts: specific action + time frame + accountability. D1 needs the coach to define all three; D4 can usually do it themselves.</span>',
+    dqs: {
+      1: [
+        { zh:'在我们下次见面之前，你愿意承诺做哪一件具体的事？', en:'What one specific thing will you commit to doing before we meet again?' },
+        { zh:'让我们一起把这个承诺写下来——是什么行动，什么时候完成？', en:'Let\'s write it down together — what is the action, and by when?' },
+        { zh:'谁可以在这周陪伴你走这一步？', en:'Who can walk alongside you this week as you take this step?' }
+      ],
+      2: [
+        { zh:'从1到10，你对这个下一步有多大信心？', en:'On a scale of 1 to 10, how confident do you feel about this next step?' },
+        { zh:'这周你可以做什么小事来重建动力？', en:'What is one small thing you can do this week to rebuild momentum?' },
+        { zh:'如果你信心只有5分，需要什么才能让它变成7分？', en:'If your confidence is at a 5, what would it take to get it to a 7?' }
+      ],
+      3: [
+        { zh:'你会采取什么具体步骤？你打算请谁来问责你？', en:'What specific step will you take, and who will you ask to hold you accountable?' },
+        { zh:'你如何知道你已经成功采取了这一步？', en:'How will you know when you have successfully taken this step?' },
+        { zh:'如果你犹豫了，你会对自己说什么来提醒自己继续前行？', en:'If you hesitate, what would you say to yourself to keep moving forward?' }
+      ],
+      4: [
+        { zh:'你的计划是什么？我什么时候再来跟进你比较合适？', en:'What is your plan, and when would it make sense for me to check back in with you?' },
+        { zh:'你需要我提供什么支持？还是你可以自己全权推进？', en:'What support do you need from me, if anything? Or can you fully take it from here?' }
+      ]
+    }
   }
 };
 
-function showGrow(key) {
-  ['g','r','o','w'].forEach(k => document.getElementById('gs-'+k).classList.toggle('active', k===key));
-  const d = growData[key];
-  document.getElementById('grow-detail').innerHTML = `
+const dNames = {
+  1: 'Enthusiastic Beginner · 热情的初学者',
+  2: 'Disillusioned Learner · 失望的学习者',
+  3: 'Capable but Cautious · 有能力但谨慎',
+  4: 'Self-Reliant Achiever · 自立的成就者'
+};
+
+let activeGrowKey = 'g';
+let activeFilter  = 'all';
+
+/* ── Render GROW detail ── */
+function renderGrow() {
+  const d = growData[activeGrowKey];
+  let html = `
     <div style="font-size:16px;font-weight:600;margin-bottom:4px">${d.word} · ${d.zh}</div>
     <div class="grow-core">${d.core}</div>
     <div class="grow-desc">${d.desc}</div>
-    <div class="sec-label" style="margin-top:1rem">Sample questions · 示例问题</div>
-    ${d.qs.map(q=>`<div class="grow-q">${q[0]}<br><span style="color:var(--text3);font-size:12px">${q[1]}</span></div>`).join('')}
+    <div class="grow-tip"><div class="grow-tip-label">Coach Tip · 教练提示</div>${d.tip}</div>
+    <div class="sec-label" style="margin-top:1rem;margin-bottom:10px">Questions by D-Level · 按发展阶段筛选提问</div>
   `;
+  [1,2,3,4].forEach(level => {
+    const qs = d.dqs[level];
+    const hidden = (activeFilter !== 'all' && activeFilter !== String(level)) ? ' gf-hidden' : '';
+    html += `<div class="grow-d-group${hidden}" data-dl="${level}">`;
+    html += `<div class="grow-d-header">
+      <span class="grow-d-badge db${level}">D${level}</span>
+      <span class="grow-d-name">${dNames[level]}</span>
+    </div>`;
+    qs.forEach(q => {
+      const safeZh = q.zh.replace(/"/g,'&quot;');
+      const safeEn = q.en.replace(/"/g,'&quot;');
+      html += `<div class="grow-q-row" data-zh="${safeZh}" data-en="${safeEn}" onclick="copyQ(this)">
+        <div class="qr-text">
+          <span class="qr-zh">${q.zh}</span>
+          <span class="qr-en">${q.en}</span>
+        </div>
+        <span class="qr-copy">复制</span>
+      </div>`;
+    });
+    html += '</div>';
+  });
+  document.getElementById('grow-detail').innerHTML = html;
 }
-showGrow('g');
 
+function showGrow(key) {
+  activeGrowKey = key;
+  ['g','r','o','w'].forEach(k => document.getElementById('gs-'+k).classList.toggle('active', k===key));
+  renderGrow();
+}
+
+/* ── D-level filter ── */
+function setFilter(level, btn) {
+  activeFilter = level;
+  document.querySelectorAll('.gf-btn').forEach(b => b.classList.remove('active'));
+  btn.classList.add('active');
+  document.querySelectorAll('.grow-d-group').forEach(g => {
+    g.classList.toggle('gf-hidden', level !== 'all' && g.dataset.dl !== level);
+  });
+}
+
+/* ── Copy question ── */
+function copyQ(el) {
+  const zh = el.getAttribute('data-zh');
+  const en = el.getAttribute('data-en');
+  navigator.clipboard.writeText(zh + '\n' + en).then(() => {
+    el.classList.add('gqr-copied');
+    el.querySelector('.qr-copy').textContent = '✓ 已复制';
+    showToast('提问已复制 · Question copied');
+    setTimeout(() => {
+      el.classList.remove('gqr-copied');
+      el.querySelector('.qr-copy').textContent = '复制';
+    }, 2200);
+  }).catch(() => showToast('请手动复制 · Please copy manually'));
+}
+
+/* ── Toast ── */
+function showToast(msg) {
+  const t = document.getElementById('toast');
+  t.textContent = msg;
+  t.classList.add('show');
+  setTimeout(() => t.classList.remove('show'), 2400);
+}
+
+/* ── Tabs ── */
 function showTab(name, btn) {
-  document.querySelectorAll('.section').forEach(s=>s.classList.remove('active'));
-  document.querySelectorAll('.tab').forEach(t=>t.classList.remove('active'));
+  document.querySelectorAll('.section').forEach(s => s.classList.remove('active'));
+  document.querySelectorAll('.tab').forEach(t => t.classList.remove('active'));
   document.getElementById('tab-'+name).classList.add('active');
   btn.classList.add('active');
 }
 
+/* ── Overview detail panels ── */
 function showDetail(id) {
-  document.querySelectorAll('.detail-panel').forEach(p=>p.classList.remove('visible'));
+  document.querySelectorAll('.detail-panel').forEach(p => p.classList.remove('visible'));
   const p = document.getElementById('detail-'+id);
   p.classList.add('visible');
-  setTimeout(()=>p.scrollIntoView({behavior:'smooth',block:'nearest'}),50);
+  setTimeout(() => p.scrollIntoView({ behavior:'smooth', block:'nearest' }), 50);
 }
 function closeDetail(id) {
   document.getElementById('detail-'+id).classList.remove('visible');
 }
 
-// Checklist
+/* ── Checklist (expanded to 10 items) ── */
 const checks = [
-  ['Did the coach inquire about the coachee\'s goal for the session or future goals?','教练是否询问了被教练者本次会谈的目标或未来目标？'],
-  ['Did the coach prompt the coachee to describe their current reality?','教练是否引导被教练者描述目前真实处境？'],
-  ['Did the coach encourage the coachee to generate multiple options?','教练是否鼓励被教练者提出多个可能方案？'],
-  ['Did the coach end the session with a plan and follow-up time?','教练是否以具体计划和跟进时间结束会谈？']
+  ['我在会谈开始前已诊断被教练者的D阶段', 'I diagnosed the coachee\'s D-level before the session'],
+  ['我的教练风格与被教练者的发展阶段相匹配', 'My coaching style matched the coachee\'s development level'],
+  ['我在 Goal 阶段帮助被教练者连接了使命与呼召', 'I helped connect their goal to calling and mission in the G stage'],
+  ['我在 Reality 阶段充分聆听，没有过快给答案', 'I listened fully in Reality without rushing to solutions'],
+  ['我注意到并命名了被教练者的情绪状态', 'I noticed and named the coachee\'s emotional state'],
+  ['我在 Options 阶段先邀请被教练者自己探索可能性', 'I invited the coachee to explore options before offering my own'],
+  ['我在适当时机运用了重新框架（募款作为邀请）', 'I applied reframing when appropriate — fundraising as invitation, not burden'],
+  ['我们在 Way Forward 达成了具体、可测量的承诺', 'We reached a specific, measurable commitment in Way Forward'],
+  ['我确认了下次跟进的时间与内容', 'I confirmed the next follow-up time and topic'],
+  ['会谈以祷告结束，或邀请了属灵反思', 'The session ended with prayer or an invitation to spiritual reflection']
 ];
 const cl = document.getElementById('checklist-items');
-checks.forEach((c,i)=>{
+checks.forEach((c, i) => {
   const div = document.createElement('div');
-  div.className='check-item';
-  div.innerHTML=`
-    <input type="checkbox" id="chk${i}">
+  div.className = 'check-item';
+  div.innerHTML = `
+    <input type="checkbox" id="chk${i}" onchange="updateCount()">
     <label class="check-label" for="chk${i}">${c[0]}<span>${c[1]}</span></label>
   `;
   cl.appendChild(div);
 });
+function updateCount() {
+  const total = checks.length;
+  const done  = document.querySelectorAll('#checklist-items input:checked').length;
+  document.getElementById('check-count').textContent = done > 0 ? `${done} / ${total} 已完成 · completed` : '';
+}
+
+/* ── Init ── */
+showGrow('g');
 </script>
 </body>
 </html>
