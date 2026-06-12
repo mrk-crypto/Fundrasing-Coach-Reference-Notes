@@ -1,6 +1,11 @@
-/* Fundraising Coach Reference — Service Worker v1 */
-const CACHE = 'coach-ref-v1';
-const CORE  = ['./'];
+/* Fundraising Coach Reference — Service Worker v2 */
+const CACHE = 'coach-ref-v2';
+const CORE  = [
+  './',
+  './index.html',
+  './manifest.json',
+  './icon.svg'
+];
 
 self.addEventListener('install', function(e) {
   e.waitUntil(
@@ -24,6 +29,27 @@ self.addEventListener('activate', function(e) {
 self.addEventListener('fetch', function(e) {
   if (e.request.method !== 'GET') return;
   if (!e.request.url.startsWith(self.location.origin)) return;
+
+  if (e.request.mode === 'navigate') {
+    e.respondWith(
+      fetch(e.request).then(function(resp) {
+        if (resp && resp.status === 200) {
+          var clone = resp.clone();
+          caches.open(CACHE).then(function(c) {
+            c.put('./', clone.clone());
+            c.put('./index.html', clone);
+          });
+        }
+        return resp;
+      }).catch(function() {
+        return caches.match('./index.html').then(function(cached) {
+          return cached || caches.match('./');
+        });
+      })
+    );
+    return;
+  }
+
   e.respondWith(
     caches.match(e.request).then(function(cached) {
       if (cached) {

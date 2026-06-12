@@ -1265,12 +1265,6 @@
   .sess-save-ind.ssi-show { opacity: 1; }
 
 </style>
-  <link rel="manifest" href="manifest.json">
-  <meta name="theme-color" content="#1A1A18">
-  <meta name="apple-mobile-web-app-capable" content="yes">
-  <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
-  <meta name="apple-mobile-web-app-title" content="Coach Ref">
-  <link rel="apple-touch-icon" href="icon-192.png">
 </head>
 <body>
 
@@ -3029,7 +3023,7 @@ function setSessLevel(level, btn) {
   document.getElementById('ss-diag-result').innerHTML = '<span style="font-style:normal;font-weight:600;color:' + dColors[level] + '">' + dNames[level] + '</span>';
   // Update adapt box
   var a = adaptData[level];
-  document.getElementById('ss-adapt-box').innerHTML = '<span style="font-size:10px;font-weight:700;letter-spacing:.08em;text-transform:uppercase;font-family:'DM Mono',monospace;color:var(--text3)">建议风格 Recommended</span><br><span style="font-size:14px;font-weight:700;color:' + dColors[level] + '">' + a.style + ' ' + a.styleZh + '</span><br><span style="font-size:12.5px;color:var(--text2);line-height:1.65">' + a.desc + '</span>';
+  document.getElementById('ss-adapt-box').innerHTML = '<span style="font-size:10px;font-weight:700;letter-spacing:.08em;text-transform:uppercase;font-family:&quot;DM Mono&quot;,monospace;color:var(--text3)">建议风格 Recommended</span><br><span style="font-size:14px;font-weight:700;color:' + dColors[level] + '">' + a.style + ' ' + a.styleZh + '</span><br><span style="font-size:12.5px;color:var(--text2);line-height:1.65">' + a.desc + '</span>';
   // Update options prompts
   var oqs = sessOptionsQs[level];
   var opsHtml = '<div class="ss-prompt" onclick="copyPrompt(this)"><div class="ss-prompt-text"><span class="sp-zh">你看到有哪些可能的选择？</span><span class="sp-en">What options do you see?</span></div><span class="sp-copy">复制</span></div>';
@@ -3050,8 +3044,7 @@ function setSessLevel(level, btn) {
 function copyPrompt(el) {
   var zh = el.querySelector('.sp-zh') ? el.querySelector('.sp-zh').textContent.trim() : '';
   var en = el.querySelector('.sp-en') ? el.querySelector('.sp-en').textContent.trim() : '';
-  var text = zh + (en ? '
-' + en : '');
+  var text = zh + (en ? '\n' + en : '');
   navigator.clipboard.writeText(text).then(function() {
     el.classList.add('sp-copied');
     var cp = el.querySelector('.sp-copy');
@@ -3091,14 +3084,12 @@ function copySessionNotes() {
     if (i < 10) lines.push('');
   }
   lines.push('─────────────────────────────────────────────');
-  navigator.clipboard.writeText(lines.join('
-')).then(function() {
+  navigator.clipboard.writeText(lines.join('\n')).then(function() {
     showToast('会谈记录已复制 · Session notes copied');
   });
 }
 
 function resetSession() {
-  try { localStorage.removeItem(SESS_KEY); } catch(e) {}
   sessLevel = null; sessDone = {};
   for (var i = 1; i <= 10; i++) {
     var el = document.getElementById('ss-s' + i);
@@ -3123,7 +3114,7 @@ function resetSession() {
 
 // Mini checklist for step 10
 var mcItems = [
-  ['我的风格与被教练者的D阶段相匹配','My style matched the coachee's D-level'],
+  ['我的风格与被教练者的D阶段相匹配',"My style matched the coachee's D-level"],
   ['我在 Reality 充分聆听，没有急于给答案','I listened fully in Reality without rushing to solutions'],
   ['我帮助被教练者连接了使命与呼召','I helped connect goal to calling and mission'],
   ['Way Forward 达成了具体可衡量的承诺','We reached a specific, measurable commitment'],
@@ -3133,7 +3124,7 @@ var mcList = document.getElementById('mc-list');
 mcItems.forEach(function(item, i) {
   var div = document.createElement('div');
   div.className = 'mc-item';
-  div.innerHTML = '<input type="checkbox" id="mc' + i + '" onchange="this.closest('.mc-item').classList.toggle('mc-checked',this.checked)"><label for="mc' + i + '">' + item[0] + '<br><span style='color:var(--text3);font-size:11px'>' + item[1] + '</span></label>';
+  div.innerHTML = '<input type="checkbox" id="mc' + i + '" onchange="this.closest(&quot;.mc-item&quot;).classList.toggle(&quot;mc-checked&quot;,this.checked)"><label for="mc' + i + '">' + item[0] + '<br><span style="color:var(--text3);font-size:11px">' + item[1] + '</span></label>';
   mcList.appendChild(div);
 });
 
@@ -3203,14 +3194,6 @@ function loadSession() {
 showGrow('g');
 </script>
 
-<script>
-if ('serviceWorker' in navigator) {
-  window.addEventListener('load', function() {
-    navigator.serviceWorker.register('./service-worker.js')
-      .catch(function(e){ console.warn('SW:', e); });
-  });
-}
-</script>
 <script>
 if ('serviceWorker' in navigator) {
   window.addEventListener('load', function() {
