@@ -1,0 +1,17 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512">
+  <!-- App icon: dark background representing the 4 D-levels -->
+  <rect width="512" height="512" rx="96" fill="#1A1A18"/>
+  <!-- D1 · orange -->
+  <circle cx="168" cy="188" r="60" fill="#E85D24" opacity=".95"/>
+  <!-- D2 · blue -->
+  <circle cx="344" cy="188" r="60" fill="#3B8BD4" opacity=".95"/>
+  <!-- D3 · green -->
+  <circle cx="168" cy="324" r="60" fill="#1D9E75" opacity=".95"/>
+  <!-- D4 · purple -->
+  <circle cx="344" cy="324" r="60" fill="#7F77DD" opacity=".95"/>
+  <!-- Connecting lines suggesting growth arc -->
+  <line x1="216" y1="188" x2="296" y2="188" stroke="white" stroke-width="6" stroke-linecap="round" opacity=".25"/>
+  <line x1="168" y1="236" x2="168" y2="276" stroke="white" stroke-width="6" stroke-linecap="round" opacity=".25"/>
+  <line x1="216" y1="324" x2="296" y2="324" stroke="white" stroke-width="6" stroke-linecap="round" opacity=".25"/>
+  <line x1="344" y1="236" x2="344" y2="276" stroke="white" stroke-width="6" stroke-linecap="round" opacity=".25"/>
+</svg>

@@ -1,0 +1,21 @@
+{
+  "name": "Fundraising Coach Reference 募款教练参考工具",
+  "short_name": "Coach Ref",
+  "description": "Bilingual situational coaching reference for support-raising ministry",
+  "start_url": "./",
+  "scope": "./",
+  "display": "standalone",
+  "orientation": "portrait-primary",
+  "background_color": "#FAFAF8",
+  "theme_color": "#1A1A18",
+  "lang": "zh-TW",
+  "categories": ["productivity", "education"],
+  "icons": [
+    {
+      "src": "icon.svg",
+      "sizes": "any",
+      "type": "image/svg+xml",
+      "purpose": "any maskable"
+    }
+  ]
+}

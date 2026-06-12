@@ -4,7 +4,13 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>Fundraising Coach Reference 募款教练参考工具</title>
-<link href="https://fonts.googleapis.com/css2?family=Noto+Sans+SC:wght@300;400;500;700&family=DM+Sans:wght@300;400;500;600&family=DM+Mono:wght@400;500&display=swap" rel="stylesheet">
+  <meta name="theme-color" content="#1A1A18">
+  <meta name="apple-mobile-web-app-capable" content="yes">
+  <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+  <meta name="apple-mobile-web-app-title" content="Coach Ref">
+  <link rel="manifest" href="manifest.json">
+  <link rel="apple-touch-icon" href="icon.svg">
+  <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+SC:wght@300;400;500;700&family=DM+Sans:wght@300;400;500;600&family=DM+Mono:wght@400;500&display=swap" rel="stylesheet">
 <style>
   :root {
     --c-d1: #E85D24;
@@ -1250,7 +1256,21 @@
   .mc-item input { margin-top: 2px; cursor: pointer; accent-color: var(--c-d3); }
   .mc-item.mc-checked { color: var(--c-d3); }
 
+
+  .sess-save-ind {
+    font-size: 11px; color: var(--c-d3);
+    font-family: 'DM Mono', monospace;
+    opacity: 0; transition: opacity .4s; flex-shrink: 0;
+  }
+  .sess-save-ind.ssi-show { opacity: 1; }
+
 </style>
+  <link rel="manifest" href="manifest.json">
+  <meta name="theme-color" content="#1A1A18">
+  <meta name="apple-mobile-web-app-capable" content="yes">
+  <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+  <meta name="apple-mobile-web-app-title" content="Coach Ref">
+  <link rel="apple-touch-icon" href="icon-192.png">
 </head>
 <body>
 
@@ -2252,6 +2272,7 @@
         <span class="sess-progress-label">Progress · 进度</span>
         <span class="sess-progress-bar"><span class="sess-progress-fill" id="sess-prog-fill"></span></span>
         <span class="sess-progress-label" id="sess-prog-text" style="margin-left:6px">0 / 10</span>
+        <span class="sess-save-ind" id="sess-save-ind"></span>
       </div>
       <div class="sess-btn-row">
         <button class="sess-btn" onclick="resetSession()">&#8635; 重置 Reset</button>
@@ -2983,6 +3004,7 @@ function markDone(num) {
   el.classList.add('ss-done');
   sessDone[num] = true;
   updateSessProgress();
+  saveSession();
   if (num < 10) {
     setTimeout(function() {
       var next = document.getElementById('ss-s' + (num + 1));
@@ -3022,6 +3044,7 @@ function setSessLevel(level, btn) {
     wfHtml += '<div class="ss-prompt" onclick="copyPrompt(this)"><div class="ss-prompt-text"><span class="sp-zh">' + q.zh + '</span><span class="sp-en">' + q.en + '</span></div><span class="sp-copy">复制</span></div>';
   });
   document.getElementById('ss-wf-prompts').innerHTML = wfHtml;
+  saveSession();
 }
 
 function copyPrompt(el) {
@@ -3075,6 +3098,7 @@ function copySessionNotes() {
 }
 
 function resetSession() {
+  try { localStorage.removeItem(SESS_KEY); } catch(e) {}
   sessLevel = null; sessDone = {};
   for (var i = 1; i <= 10; i++) {
     var el = document.getElementById('ss-s' + i);
@@ -3094,6 +3118,7 @@ function resetSession() {
   document.getElementById('sess-prog-fill').style.width = '0%';
   document.getElementById('sess-prog-text').textContent = '0 / 10';
   document.getElementById('ss-s1').classList.add('ss-open');
+  try { localStorage.removeItem(LS_KEY); } catch(e) {}
 }
 
 // Mini checklist for step 10
@@ -3112,8 +3137,87 @@ mcItems.forEach(function(item, i) {
   mcList.appendChild(div);
 });
 
+
+/* ── localStorage persistence ── */
+var LS_KEY = 'coach_ref_session_v1';
+
+function saveSession() {
+  try {
+    var payload = { level: sessLevel, done: sessDone, notes: {} };
+    ['sn-1','sn-2','sn-3','sn-4','sn-5','sn-6','sn-7','sn-8','sn-9','sn-10',
+     'wf-what','wf-when','wf-who','fu-date'].forEach(function(id) {
+      var el = document.getElementById(id);
+      if (el) payload.notes[id] = el.value;
+    });
+    localStorage.setItem(LS_KEY, JSON.stringify(payload));
+    var ind = document.getElementById('sess-save-ind');
+    if (ind) {
+      ind.textContent = '\u2713 \u5df2\u4fdd\u5b58';
+      ind.classList.add('ssi-show');
+      clearTimeout(ind._t);
+      ind._t = setTimeout(function(){ ind.classList.remove('ssi-show'); }, 1800);
+    }
+  } catch(e) {}
+}
+
+function loadSession() {
+  try {
+    var raw = localStorage.getItem(LS_KEY);
+    if (!raw) return;
+    var data = JSON.parse(raw);
+    if (data.notes) {
+      Object.keys(data.notes).forEach(function(id) {
+        var el = document.getElementById(id);
+        if (el) el.value = data.notes[id];
+      });
+    }
+    if (data.done && Object.keys(data.done).length) {
+      Object.keys(data.done).forEach(function(n) {
+        sessDone[parseInt(n)] = true;
+        var el = document.getElementById('ss-s' + n);
+        if (el) el.classList.add('ss-done');
+      });
+      updateSessProgress();
+    }
+    if (data.level) {
+      var btn = document.querySelector('.sdb-d' + data.level);
+      if (btn) setSessLevel(data.level, btn);
+    }
+    if (Object.keys(data.done || {}).length) {
+      showToast('上次会谈记录已恢复 · Session restored');
+    }
+  } catch(e) {}
+}
+
 /* ── Init ── */
+// Autosave: attach input listeners to all session fields
+(function() {
+  var ids = ['sn-1','sn-2','sn-3','sn-4','sn-5','sn-6','sn-7',
+             'sn-8','sn-9','sn-10','wf-what','wf-when','wf-who','fu-date'];
+  ids.forEach(function(id) {
+    var el = document.getElementById(id);
+    if (el) el.addEventListener('input', saveSession);
+  });
+  setTimeout(loadSession, 80);
+})();
 showGrow('g');
+</script>
+
+<script>
+if ('serviceWorker' in navigator) {
+  window.addEventListener('load', function() {
+    navigator.serviceWorker.register('./service-worker.js')
+      .catch(function(e){ console.warn('SW:', e); });
+  });
+}
+</script>
+<script>
+if ('serviceWorker' in navigator) {
+  window.addEventListener('load', function() {
+    navigator.serviceWorker.register('./service-worker.js')
+      .catch(function() {});
+  });
+}
 </script>
 </body>
 </html>
